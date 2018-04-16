@@ -10,6 +10,7 @@
 var MAX_COLUMN_SIZE = 3;
 var columns;
 
+var columnPosition;
 var loopCount;
 
 /**
@@ -21,6 +22,7 @@ var loopCount;
 function initHanoi(n) {
     columns = [];
 
+    columnPosition = 0;
 	loopCount = 0;
 	for (var i = 0; i < MAX_COLUMN_SIZE; i++) {
 		var column = new Array();
@@ -33,20 +35,23 @@ function initHanoi(n) {
 	}
 }
 
+function moveNextColumn() {
+    columnPosition++;
+    if (columnPosition >= MAX_COLUMN_SIZE) {
+        columnPosition = 0;
+    }
+}
+
 function hanoi(n) {
 	initHanoi(n);
     
     console.log('start::' + columns);
 
     var answer = [];
-    var columnPosition = 0;
-    
-	var isLoop = true;
-	
 	var beforeMovedFloor = -1;
 
 	// 2^n-1번 루프 돌림
-	while (isLoop) {
+	while (loopCount < Math.pow(2, n) - 1) {
 		var curColumn = columns[columnPosition];
         var floorValue = curColumn[curColumn.length - 1];
         if (floorValue > 0) {
@@ -63,25 +68,15 @@ function hanoi(n) {
 
             if ((movedColumn.length == 0 || floorValue > movedColumn[movedColumn.length - 1]) && beforeMovedFloor != floorValue) {
                 movedColumn.push(curColumn.pop());
-                answer.push([columnPosition, movedColumnPosition]);
+                answer.push([columnPosition + 1, movedColumnPosition + 1]);
 				loopCount++;
                 beforeMovedFloor = floorValue;
                 //$('#honoiDiv').append('[' + columnPosition + ', ' + movedColumnPosition + '], ');
             } else {
-                columnPosition++;
-                if (columnPosition >= MAX_COLUMN_SIZE) {
-                    columnPosition = 0;
-                }
+                moveNextColumn();
             }
         } else {
-            columnPosition++;
-            if (columnPosition >= MAX_COLUMN_SIZE) {
-                columnPosition = 0;
-            }
-        }
-
-		if (loopCount >= Math.pow(2, n) - 1) {
-			isLoop = false;
+            moveNextColumn();   
         }
 	}
     
@@ -92,7 +87,7 @@ function hanoi(n) {
 }
 
 // 아래는 테스트로 출력해 보기 위한 코드입니다.
-console.log(hanoi(2));
+console.log(hanoi(10));
 
 
 // N이 2라면
