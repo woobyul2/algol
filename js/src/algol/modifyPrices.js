@@ -30,3 +30,52 @@ M 개의 후속 라인의 각 라인 j (여기서 0≤j <M)는 항목의 요소 
 2. 알렉스의 배열순서대로 탐색
 3. 시작은 첫번째 구한거 이후 부터. 이름순이기 때문에 한번 검색한건 또 할 필요 없음.
 */
+
+function priceSort(array, priceArray) {
+    var tempVal = '';
+    var tempPrice = 0;
+
+    for (var i = 0; i < array.length - 1; i++) {
+        for (var j = i + 1; j < array.length; j++) {
+            if (array[i] > array[j]) {
+                tempVal = array[i];
+                array[i] = array[j];
+                array[j] = tempVal;
+
+                tempPrice = priceArray[i];
+                priceArray[i] = priceArray[j];
+                priceArray[j] = tempPrice;
+            }
+        }
+    }
+}
+
+function verifyItems(origItems, origPrices, items, prices) {
+    priceSort(origItems, origPrices);
+    priceSort(items, prices);
+
+    var diffCount = 0;
+    var currSameIndex = 0;
+
+    for (var i = 0; i < items.length; i++) {
+        for (var j = currSameIndex; j < origItems.length; j++) {
+            if (items[i] == origItems[j]) {
+                currSameIndex = j + 1;
+
+                if (prices[i] != origPrices[j]) {
+                    diffCount++;
+                }
+                break;
+            }
+        }
+    }
+
+    return diffCount;
+}
+
+console.log(verifyItems(
+    ['rice', 'sugar', 'wheat', 'cheese', 'cake'], 
+    [16.89, 56.92, 20.89, 345.99, 152.00], 
+    ['cheese', 'sugar', 'rice'], 
+    [16.89, 400.89, 16.89]
+));
