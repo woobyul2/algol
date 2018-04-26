@@ -38,8 +38,14 @@ function isBalanced(expression, maxReplace) {
             }
         }
     }
+
+    var matchedCount = (leftPosition.length < rightPosition.length ? leftPosition.length : rightPosition.length) * 2;
+
+    console.log('leftPosition::' + leftPosition);
+    console.log('rightPosition::' + rightPosition);
+    console.log('expression.length - matchedCount::' + (expression.length - matchedCount));
     
-    return ((expression.length - (rightPosition.length * 2) <= maxReplace) ? 1 : 0);
+    return ((expression.length - matchedCount <= maxReplace) ? 1 : 0);
 }
 
 function balancedOrNot(expressions, maxReplacements) {
