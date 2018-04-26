@@ -14,18 +14,40 @@
 이 함수는 expressions [i]가 균형 잡힌 경우 element [i]가 1을 포함하고,
 균형이 맞지 않은 경우 0을 포함하는 정수 배열을 반환해야합니다.
 */
-
 function isBalanced(expression, maxReplace) {
-    for (var i = 0; i < expression.length; i++) {
 
+    var leftPosition = [];
+    var rightPosition = [];
+
+    for (var i = 0; i < expression.length; i++) {
+        if (expression[i] == '<') {
+            leftPosition.push(i);
+
+            var j = 0;
+            if (rightPosition.length == 0) {
+                j = i + 1;
+            } else {
+                j = (i > rightPosition[rightPosition.length - 1] ? i : rightPosition[rightPosition.length - 1]) + 1;
+            }
+
+            for (; j < expression.length; j++) {
+                if (expression[j] == '>') {
+                    rightPosition.push(j);
+                    break;
+                }
+            }
+        }
     }
+    
+    return ((expression.length - (rightPosition.length * 2) <= maxReplace) ? 1 : 0);
 }
 
 function balancedOrNot(expressions, maxReplacements) {
-    
+    var result = [];
     for (var i = 0; i < expressions.length; i++) {
-
+        result[i] = isBalanced(expressions[i], maxReplacements[i]);
     }
+    return result;
 }
 
 console.log(balancedOrNot(
