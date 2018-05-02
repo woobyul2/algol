@@ -1,0 +1,36 @@
+
+    /*
+     * Complete the function below.
+     */
+    static int count = 0;
+    static String[] array = new String[10];
+
+    static void superStack(String[] operations) {
+        
+        for(int i = 0; i < operations.length; i++){
+            String [] ops = operations[i].split(" ");
+            String op = ops[0];
+      
+            if(op.equals("push")){
+                count ++;
+                String num = ops[1];
+                array[count] = num;
+            }else if (op.equals("pop")){
+                count --;
+            }else {
+                int first = Integer.parseInt(ops[1]);
+                int second = Integer.parseInt(ops[2]);
+                
+                for(int k = 1; k <= first; k++){
+                    int last = Integer.parseInt(array[k]) + second;
+                    array[k] = Integer.toString(last); 
+                }       
+            }
+            if(array[count] == null || array[count].length() == 0){
+                System.out.println("EMPTY");
+            }else {
+                System.out.println(array[count]);    
+            }
+        }
+        
+    }
