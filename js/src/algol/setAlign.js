@@ -28,21 +28,62 @@ function factorial(n) {
     }
 }
 
+function getPositionIndex(n) {
+    if (n < 4) {
+        return 1;
+    } else {
+        return (n - 1) * getPositionIndex(n - 1);
+    }
+}
+
+var answer;
+var loopCount;
+
+function getArray(sortArray) {
+    var sortArrayLength = sortArray.length;
+    var tempArray;
+    if (sortArrayLength > 2) {
+        for (var i = 0; i < sortArrayLength; i++) {
+            var cloneArray = sortArray.slice();
+            var num = cloneArray[i];
+            cloneArray.splice(i, 1);
+            getArray(cloneArray);
+            
+            var index = factorial(sortArrayLength - 1);
+            var positionIndex = (loopCount / getPositionIndex(sortArrayLength)) - 1;
+
+            for (var j = positionIndex * index; j < (positionIndex + 1) * index; j++) {
+                answer[j].splice(0, 0, num);
+            }
+        }
+    } else {
+        answer.push([sortArray[0], sortArray[1]]);
+        answer.push([sortArray[1], sortArray[0]]);
+        loopCount++;
+    }
+}
+
 function setAlign(n, k) {
-    var answer = [];
+    answer = [];
+    loopCount = 0;
+
+    if (n < 2) {
+        return [1];
+    }
 
     var initArray = [];
 
     for (var i = 0; i < n; i++) {
         initArray.push(i + 1);
     }
-    
+    getArray(initArray);
     console.log(factorial(n));
-    console.log(initArray);
 
-	return answer;
+    // return answer[k - 1];
+    return answer;
 }
 
 // 아래는 테스트로 출력해 보기 위한 코드입니다.
-console.log(setAlign(3, 5));
+console.log(setAlign(4, 5));
+// setAlign(3, 5);
 
